@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  backend:
+    build: .
+    container_name: cozyhome_backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      PORT: 8080
+      JWT_SECRET: mi_super_secreto_123
+      JWT_EXPIRES_IN: 1d
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  db:
+    image: mysql:8
+    container_name: cozyhome_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: cozyhome
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
