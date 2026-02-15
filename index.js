@@ -6,7 +6,7 @@ import { configDb } from "./config/db.js";
 import { Users } from "./entity/clients.entity.js";
 import { Products } from "./entity/products.entity.js";
 import { Sale } from "./entity/sale.entity.js";
-import "./entity/saleDetail.entity.js";
+import {SaleDetail} from "./entity/saleDetail.entity.js";
 
 
 import CreateClients from "./routes/clients.router.js";
@@ -25,7 +25,7 @@ configDb();
 Users.sync();
 Products.sync();
 Sale.sync();
-
+SaleDetail.sync();
 
 app.use("/uploads", express.static("uploads"));
 app.use("/api/clients", CreateClients);
