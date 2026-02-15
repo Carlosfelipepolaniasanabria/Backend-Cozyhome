@@ -2,12 +2,12 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 
-import { configDb } from "./config/db.js";
-import { Users } from "./entity/clients.entity.js";
-import { Products } from "./entity/products.entity.js";
-import { Sale } from "./entity/sale.entity.js";
-import {SaleDetail} from "./entity/saleDetail.entity.js";
+import { configDb, sequelize } from "./config/db.js";
 
+import "./entity/clients.entity.js";
+import "./entity/products.entity.js";
+import "./entity/sale.entity.js";
+import "./entity/saleDetail.entity.js";
 
 import CreateClients from "./routes/clients.router.js";
 import productsRoutes from "./routes/products.router.js";
@@ -20,18 +20,25 @@ const server = http.createServer(app);
 app.use(express.json());
 app.use(cors());
 
-configDb();
-
-Users.sync();
-Products.sync();
-Sale.sync();
-SaleDetail.sync();
-
 app.use("/uploads", express.static("uploads"));
 app.use("/api/clients", CreateClients);
 app.use("/api/products", productsRoutes);
 app.use("/api", salesRoutes);
 
-server.listen(PORT, () => {
-  console.log("Listening on port", PORT);
-});
+const startServer = async () => {
+  try {
+    await configDb();
+
+    // 🔥 Sync global una sola vez
+    await sequelize.sync();
+
+    server.listen(PORT, () => {
+      console.log("🚀 Server running on port", PORT);
+    });
+
+  } catch (error) {
+    console.error("❌ Error starting server:", error);
+  }
+};
+
+startServer();
