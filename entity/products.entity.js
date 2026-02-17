@@ -32,7 +32,6 @@ export const Products = sequelize.define("Products", {
   imagen: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: null
   },
 
   activo: {
