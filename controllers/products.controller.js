@@ -10,30 +10,36 @@ export const getProducts = async (req, res) => {
 export const createProduct = async (req, res) => {
   try {
 
-
-    console.log("BODY:", req.body);
-    console.log("FILE:", req.file); 
-
     const { nombre, descripcion, precio, categoria } = req.body;
 
+    const imageUrl = req.file ? req.file.path : null;
+
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
+    
     const product = await Products.create({
       nombre,
       descripcion,
       precio,
       categoria,
-      imagen,
+      imagen: imageUrl,
       activo: true
     });
 
     res.status(201).json(product);
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      message: "Error al crear el producto",
+   console.error("ERROR COMPLETO:");
+   console.error(error);
+   console.error("STACK:");
+   console.error(error.stack);
+
+   return res.status(500).json({
+      message: "Error creando producto",
       error: error.message
-    });
-  }
+   });
+}
+
 };
 
 export const deleteProduct = async (req, res) => {
