@@ -9,12 +9,11 @@ import { verifyToken } from "../middleware/auth.middleware.js";
 import { isAdmin } from "../middleware/admin.middleware.js";
 import { upload } from "../middleware/upload.middleware.js";
 
-
-
 const router = Router();
 
 router.post(
   "/",
+  verifyToken,
   isAdmin,
   upload.single("imagen"), 
   createProduct
