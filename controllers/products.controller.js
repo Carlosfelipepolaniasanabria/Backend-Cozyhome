@@ -12,8 +12,8 @@ export const createProduct = async (req, res) => {
     const { nombre, descripcion, precio, categoria } = req.body;
 
     const imagen = req.file
-      ? `/uploads/${req.file.filename}`
-      : "/uploads/default.png"; 
+      ? req.file.path   // 🔥 URL directa de Cloudinary
+      : null;
 
     const product = await Products.create({
       nombre,
