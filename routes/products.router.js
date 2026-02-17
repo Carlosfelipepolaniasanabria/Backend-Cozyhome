@@ -15,7 +15,6 @@ const router = Router();
 
 router.post(
   "/",
-  verifyToken,
   isAdmin,
   upload.single("imagen"), 
   createProduct

@@ -9,11 +9,12 @@ export const getProducts = async (req, res) => {
 
 export const createProduct = async (req, res) => {
   try {
-    const { nombre, descripcion, precio, categoria } = req.body;
 
-    const imagen = req.file
-      ? req.file.path   // 🔥 URL directa de Cloudinary
-      : null;
+
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file); 
+
+    const { nombre, descripcion, precio, categoria } = req.body;
 
     const product = await Products.create({
       nombre,
