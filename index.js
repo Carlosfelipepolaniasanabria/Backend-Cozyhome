@@ -20,7 +20,6 @@ const server = http.createServer(app);
 app.use(express.json());
 app.use(cors());
 
-app.use("/uploads", express.static("uploads"));
 app.use("/api/clients", CreateClients);
 app.use("/api/products", productsRoutes);
 app.use("/api", salesRoutes);

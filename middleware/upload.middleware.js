@@ -1,12 +1,14 @@
 import multer from "multer";
-import path from "path";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "../config/cloudinary.js";
 
-const storage = multer.diskStorage({
-  destination: "uploads/",
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, Date.now() + ext);
-  }
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "cozyhome_products",
+    allowed_formats: ["jpg", "png", "jpeg", "webp"],
+  },
 });
 
 export const upload = multer({ storage });
+
