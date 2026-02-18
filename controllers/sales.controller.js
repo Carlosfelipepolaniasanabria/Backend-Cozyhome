@@ -25,6 +25,7 @@ export const createSale = async (req, res) => {
         id_sale: sale.id_sale,
         id_producto: p.id,
         nombre_producto: p.nombre,
+        imagen: p.imagen,
         precio: p.precio,
         cantidad: p.cantidad,
       });

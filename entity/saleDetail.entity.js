@@ -24,6 +24,11 @@ export const SaleDetail = sequelize.define("SaleDetail", {
     allowNull: false,
   },
 
+  imagen: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+
   precio: {
     type: DataTypes.FLOAT,
     allowNull: false,
