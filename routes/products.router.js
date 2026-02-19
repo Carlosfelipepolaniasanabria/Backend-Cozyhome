@@ -2,7 +2,8 @@ import { Router } from "express";
 import {
   getProducts,
   createProduct,
-  deleteProduct
+  deleteProduct,
+  getProductImageById
 } from "../controllers/products.controller.js";
 
 import { verifyToken } from "../middleware/auth.middleware.js";
@@ -22,6 +23,8 @@ router.post(
 router.get("/", getProducts);
 
 router.delete("/:id", verifyToken, isAdmin, deleteProduct);
+
+router.get("/image/:id", getProductImageById);
 
 export default router;
 
