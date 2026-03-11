@@ -52,5 +52,8 @@ router.get("/perfil", verifyToken, (req, res) => {
     usuario: req.user
   });
 });
+
+router.put("/change-password", verifyToken, changePassword);
+
 export default router;
 

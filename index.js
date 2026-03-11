@@ -27,8 +27,6 @@ app.use("/api", salesRoutes);
 const startServer = async () => {
   try {
     await configDb();
-
-    // 🔥 Sync global una sola vez
     await sequelize.sync();
 
     server.listen(PORT, () => {

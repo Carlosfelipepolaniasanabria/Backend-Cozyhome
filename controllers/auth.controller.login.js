@@ -57,3 +57,67 @@ export const login = async (req, res) => {
   }
 };
 
+export const changePassword = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      return res.status(400).json({
+        message: "Todos los campos son obligatorios",
+      });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        message: "La nueva contraseña y la confirmación no coinciden",
+      });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({
+        message: "La nueva contraseña debe tener al menos 8 caracteres",
+      });
+    }
+
+    const user = await Users.findByPk(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "Usuario no encontrado",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.contrasena);
+
+    if (!isMatch) {
+      return res.status(401).json({
+        message: "La contraseña actual es incorrecta",
+      });
+    }
+
+    const samePassword = await bcrypt.compare(newPassword, user.contrasena);
+
+    if (samePassword) {
+      return res.status(400).json({
+        message: "La nueva contraseña no puede ser igual a la actual",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    user.contrasena = hashedPassword;
+    await user.save();
+
+    return res.json({
+      message: "Contraseña actualizada correctamente",
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error al cambiar la contraseña",
+      error: error.message,
+    });
+  }
+};
+
