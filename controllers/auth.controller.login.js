@@ -41,7 +41,6 @@ export const login = async (req, res) => {
       user: userSinPassword,
       token,
     });
-
   } catch (error) {
     return res.status(500).json({
       message: "Error en el login",
@@ -52,32 +51,19 @@ export const login = async (req, res) => {
 
 export const changePassword = async (req, res) => {
   try {
-    const userId = req.user.id;
-    const { currentPassword, newPassword, confirmPassword } = req.body;
+    const { correo, currentPassword, newPassword, confirmPassword } = req.body;
 
-    if (!currentPassword || !newPassword || !confirmPassword) {
+    if (!correo || !currentPassword || !newPassword || !confirmPassword) {
       return res.status(400).json({
-        message: "Todos los campos son obligatorios",
+        message: "Debes completar todos los campos",
       });
     }
 
-    if (newPassword !== confirmPassword) {
-      return res.status(400).json({
-        message: "La nueva contraseña y la confirmación no coinciden",
-      });
-    }
-
-    if (newPassword.length < 8) {
-      return res.status(400).json({
-        message: "La nueva contraseña debe tener al menos 8 caracteres",
-      });
-    }
-
-    const user = await Users.findByPk(userId);
+    const user = await Users.findOne({ where: { correo } });
 
     if (!user) {
       return res.status(404).json({
-        message: "Usuario no encontrado",
+        message: "El correo no está registrado",
       });
     }
 
@@ -86,6 +72,18 @@ export const changePassword = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({
         message: "La contraseña actual es incorrecta",
+      });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({
+        message: "La nueva contraseña debe tener mínimo 8 caracteres",
+      });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        message: "La confirmación de la nueva contraseña no coincide",
       });
     }
 
@@ -105,7 +103,6 @@ export const changePassword = async (req, res) => {
     return res.status(200).json({
       message: "Contraseña actualizada correctamente",
     });
-
   } catch (error) {
     return res.status(500).json({
       message: "Error al cambiar la contraseña",

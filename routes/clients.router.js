@@ -53,7 +53,7 @@ router.get("/perfil", verifyToken, (req, res) => {
   });
 });
 
-router.put("/change-password", verifyToken, changePassword);
+router.put("/change-password", changePassword);
 
 export default router;
 
