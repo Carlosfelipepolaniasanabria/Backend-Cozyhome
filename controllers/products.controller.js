@@ -1,7 +1,5 @@
 import { Products } from "../entity/products.entity.js";
 
-import { Products } from "../entity/products.entity.js";
-
 export const getProducts = async (req, res) => {
   const products = await Products.findAll({
     where: { activo: true }
