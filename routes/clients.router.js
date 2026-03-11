@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Users } from "../entity/clients.entity.js";
-import { login } from "../controllers/auth.controller.login.js";
+import { login, changePassword } from "../controllers/auth.controller.login.js";
 import { body } from "express-validator";
 import bcrypt from "bcryptjs";
 import { verifyToken } from "../middleware/auth.middleware.js";

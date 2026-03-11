@@ -1,6 +1,6 @@
 import { Users } from "../entity/clients.entity.js";
 import jwt from "jsonwebtoken";
- import bcrypt from "bcryptjs"; // asegúrate de tenerlo arriba
+import bcrypt from "bcryptjs";
 
 export const login = async (req, res) => {
   try {
@@ -20,28 +20,21 @@ export const login = async (req, res) => {
       });
     }
 
-   
+    const isMatch = await bcrypt.compare(contrasena, user.contrasena);
 
-      const isMatch = await bcrypt.compare(contrasena, user.contrasena);
-
-      if (!isMatch) {
-        return res.status(401).json({
-          message: "Contraseña incorrecta",
-        });
-      }
-
-
+    if (!isMatch) {
+      return res.status(401).json({
+        message: "Contraseña incorrecta",
+      });
+    }
 
     const token = jwt.sign(
-      { id: user.id, rol: user.rol },
+      { id: user.identificacion, rol: user.rol },
       process.env.JWT_SECRET,
       { expiresIn: "2h" }
     );
 
-    const {
-      contrasena: _,
-      ...userSinPassword
-    } = user.dataValues;
+    const { contrasena: _, ...userSinPassword } = user.dataValues;
 
     return res.json({
       message: "Login exitoso",
@@ -96,9 +89,9 @@ export const changePassword = async (req, res) => {
       });
     }
 
-    const samePassword = await bcrypt.compare(newPassword, user.contrasena);
+    const isSamePassword = await bcrypt.compare(newPassword, user.contrasena);
 
-    if (samePassword) {
+    if (isSamePassword) {
       return res.status(400).json({
         message: "La nueva contraseña no puede ser igual a la actual",
       });
@@ -109,7 +102,7 @@ export const changePassword = async (req, res) => {
     user.contrasena = hashedPassword;
     await user.save();
 
-    return res.json({
+    return res.status(200).json({
       message: "Contraseña actualizada correctamente",
     });
 
@@ -120,4 +113,3 @@ export const changePassword = async (req, res) => {
     });
   }
 };
-
