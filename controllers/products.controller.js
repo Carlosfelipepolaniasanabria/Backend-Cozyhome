@@ -97,12 +97,34 @@ export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
 
-    await Products.update(
-      { activo: false },
-      { where: { id } }
-    );
+    const product = await Products.findByPk(id);
 
-    res.json({ message: "Producto eliminado" });
+    if (!product) {
+      return res.status(404).json({
+        message: "Producto no encontrado"
+      });
+    }
+
+    // Guardar versión del producto en el log antes de eliminar
+    await ProductLog.create({
+      id_producto: product.id,
+      nombre: product.nombre,
+      descripcion: product.descripcion,
+      precio: product.precio,
+      categoria: product.categoria,
+      imagen: product.imagen,
+      activo: product.activo,
+      accion: "eliminado"
+    });
+
+    // Eliminado lógico
+    product.activo = false;
+    await product.save();
+
+    return res.json({
+      message: "Producto eliminado correctamente"
+    });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({
