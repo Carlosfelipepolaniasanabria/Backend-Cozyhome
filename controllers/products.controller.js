@@ -105,7 +105,6 @@ export const deleteProduct = async (req, res) => {
       });
     }
 
-    // Guardar versión del producto en el log antes de eliminar
     await ProductLog.create({
       id_producto: product.id,
       nombre: product.nombre,
@@ -117,22 +116,20 @@ export const deleteProduct = async (req, res) => {
       accion: "eliminado"
     });
 
-    // Eliminado lógico
     product.activo = false;
     await product.save();
 
     return res.json({
       message: "Producto eliminado correctamente"
     });
-
   } catch (error) {
     console.error(error);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Error eliminando producto",
       error: error.message
     });
   }
-};
+}
 
 export const getProductImageById = async (req, res) => {
   try {

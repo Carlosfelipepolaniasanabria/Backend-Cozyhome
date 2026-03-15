@@ -48,9 +48,8 @@ export const ProductLog = sequelize.define(
     },
 
     accion: {
-      type: DataTypes.ENUM("actualizacion"),
+      type: DataTypes.ENUM("actualizacion", "eliminado"),
       allowNull: false,
-      defaultValue: "actualizacion",
     },
   },
   {
