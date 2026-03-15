@@ -22,16 +22,15 @@ router.post(
 
 router.put(
   "/:id",
-  isAdmin,
   upload.single("imagen"),
   updateProduct
 );
 
 router.get("/", getProducts);
 
-router.get("/logs", isAdmin, getProductLogs);
+router.get("/logs", getProductLogs);
 
-router.delete("/:id", isAdmin, deleteProduct);
+router.delete("/:id", deleteProduct);
 
 router.get("/image/:id", getProductImageById);
 
