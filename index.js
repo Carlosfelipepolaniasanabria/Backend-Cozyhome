@@ -6,6 +6,7 @@ import { configDb, sequelize } from "./config/db.js";
 
 import "./entity/clients.entity.js";
 import "./entity/products.entity.js";
+import "./entity/product_log.entity.js";
 import "./entity/sale.entity.js";
 import "./entity/saleDetail.entity.js";
 
@@ -32,7 +33,6 @@ const startServer = async () => {
     server.listen(PORT, () => {
       console.log("Server running on port", PORT);
     });
-
   } catch (error) {
     console.error("Error starting server:", error);
   }

@@ -4,7 +4,8 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
-  getProductImageById
+  getProductImageById,
+  getProductLogs
 } from "../controllers/products.controller.js";
 
 import { verifyToken } from "../middleware/auth.middleware.js";
@@ -30,6 +31,8 @@ router.put(
 );
 
 router.get("/", getProducts);
+
+router.get("/logs", verifyToken, isAdmin, getProductLogs);
 
 router.delete("/:id", verifyToken, isAdmin, deleteProduct);
 
