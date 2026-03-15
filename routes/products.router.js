@@ -16,7 +16,6 @@ const router = Router();
 
 router.post(
   "/",
-  verifyToken,
   isAdmin,
   upload.single("imagen"),
   createProduct
@@ -24,7 +23,6 @@ router.post(
 
 router.put(
   "/:id",
-  verifyToken,
   isAdmin,
   upload.single("imagen"),
   updateProduct
@@ -32,9 +30,9 @@ router.put(
 
 router.get("/", getProducts);
 
-router.get("/logs", verifyToken, isAdmin, getProductLogs);
+router.get("/logs", isAdmin, getProductLogs);
 
-router.delete("/:id", verifyToken, isAdmin, deleteProduct);
+router.delete("/:id", isAdmin, deleteProduct);
 
 router.get("/image/:id", getProductImageById);
 
