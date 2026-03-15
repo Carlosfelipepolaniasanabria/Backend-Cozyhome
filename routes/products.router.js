@@ -8,25 +8,10 @@ import {
   getProductLogs
 } from "../controllers/products.controller.js";
 
-import { verifyToken } from "../middleware/auth.middleware.js";
 import { isAdmin } from "../middleware/admin.middleware.js";
 import { upload } from "../middleware/upload.middleware.js";
 
 const router = Router();
-
-router.post(
-  "/",
-  isAdmin,
-  upload.single("imagen"),
-  createProduct
-);
-
-router.put(
-  "/:id",
-  isAdmin,
-  upload.single("imagen"),
-  updateProduct
-);
 
 router.get("/", getProducts);
 
