@@ -13,6 +13,20 @@ import { upload } from "../middleware/upload.middleware.js";
 
 const router = Router();
 
+router.post(
+  "/",
+  isAdmin,
+  upload.single("imagen"),
+  createProduct
+);
+
+router.put(
+  "/:id",
+  isAdmin,
+  upload.single("imagen"),
+  updateProduct
+);
+
 router.get("/", getProducts);
 
 router.get("/logs", isAdmin, getProductLogs);
