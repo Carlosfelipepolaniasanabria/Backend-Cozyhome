@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Users } from "../entity/clients.entity.js";
-import { login, changePassword } from "../controllers/auth.controller.login.js";
+import { login, changePassword, getAllUsers, updateUserRole} from "../controllers/auth.controller.login.js";
 import { body } from "express-validator";
 import bcrypt from "bcryptjs";
 import { verifyToken } from "../middleware/auth.middleware.js";
@@ -54,6 +54,9 @@ router.get("/perfil", verifyToken, (req, res) => {
 });
 
 router.put("/change-password", changePassword);
+
+router.get("/users", getAllUsers);
+router.put("/users/:identificacion/role", updateUserRole);
 
 export default router;
 

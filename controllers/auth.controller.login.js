@@ -110,3 +110,53 @@ export const changePassword = async (req, res) => {
     });
   }
 };
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await Users.findAll({
+      attributes: {
+        exclude: ['contrasena']
+      }
+    });
+    
+    return res.json(users);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error al obtener usuarios",
+      error: error.message,
+    });
+  }
+};
+
+export const updateUserRole = async (req, res) => {
+  try {
+    const { identificacion } = req.params;
+    const { rol } = req.body;
+ 
+    if (!['admin', 'usuario'].includes(rol)) {
+      return res.status(400).json({
+        message: "Rol inválido"
+      });
+    }
+ 
+    const user = await Users.findByPk(identificacion);
+ 
+    if (!user) {
+      return res.status(404).json({
+        message: "Usuario no encontrado"
+      });
+    }
+ 
+    user.rol = rol;
+    await user.save();
+ 
+    return res.status(200).json({
+      message: "Rol actualizado correctamente"
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error al actualizar el rol",
+      error: error.message,
+    });
+  }
+};
